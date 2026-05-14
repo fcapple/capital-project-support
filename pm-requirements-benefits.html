@@ -1,0 +1,1277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Balanced Requirements Ownership: Business-Led, PM-Governed</title>
+  <style>
+    :root {
+      --pm:        #2563eb;
+      --pm-lt:     #dbeafe;
+      --pm-mid:    #93c5fd;
+      --biz:       #059669;
+      --biz-lt:    #d1fae5;
+      --biz-mid:   #6ee7b7;
+      --ba:        #7c3aed;
+      --ba-lt:     #ede9fe;
+      --tech:      #0891b2;
+      --tech-lt:   #cffafe;
+      --exec:      #dc2626;
+      --exec-lt:   #fee2e2;
+      --R:         #16a34a;
+      --A:         #dc2626;
+      --C:         #7c3aed;
+      --I:         #0891b2;
+      --bg:        #f0f4f8;
+      --surface:   #ffffff;
+      --border:    #e2e8f0;
+      --text:      #1e293b;
+      --muted:     #64748b;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.07), 0 2px 8px rgba(0,0,0,.05);
+      --shadow:    0 2px 8px rgba(0,0,0,.08), 0 8px 24px rgba(0,0,0,.06);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.65;
+    }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Hero ─────────────────────────────────── */
+    .hero {
+      background: linear-gradient(140deg, #0f2744 0%, #1e40af 55%, #0e7490 100%);
+      color: #fff;
+      padding: 80px 24px 64px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 40%, rgba(16,185,129,.18), transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(124,58,237,.15), transparent 50%);
+      pointer-events: none;
+    }
+    .hero .badge {
+      display: inline-block;
+      background: rgba(255,255,255,.15);
+      border: 1px solid rgba(255,255,255,.28);
+      border-radius: 999px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: 5px 16px;
+      margin-bottom: 22px;
+    }
+    .hero h1 {
+      font-size: clamp(1.9rem, 4.5vw, 3.1rem);
+      font-weight: 800;
+      line-height: 1.18;
+      max-width: 820px;
+      margin: 0 auto 18px;
+    }
+    .hero h1 em { font-style: normal; color: #6ee7b7; }
+    .hero p {
+      font-size: 1.08rem;
+      opacity: .87;
+      max-width: 640px;
+      margin: 0 auto 36px;
+    }
+    .hero-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+    }
+    .hero-pill {
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 8px;
+      padding: 8px 18px;
+      font-size: .85rem;
+      font-weight: 600;
+    }
+    .hero-pill span { opacity: .75; font-weight: 400; }
+
+    /* ── Utility ──────────────────────────────── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+    section { padding: 72px 24px; }
+    .section-label {
+      display: inline-block;
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--pm);
+      margin-bottom: 10px;
+    }
+    .section-title { text-align: center; margin-bottom: 48px; }
+    .section-title h2 { font-size: 1.75rem; font-weight: 800; margin-bottom: 8px; }
+    .section-title p { color: var(--muted); max-width: 600px; margin: 0 auto; font-size: .95rem; }
+
+    /* ── Philosophy cards ─────────────────────── */
+    .philosophy-section { background: var(--surface); }
+    .philosophy-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      max-width: 1060px;
+      margin: 0 auto 40px;
+    }
+    .phi-card {
+      border-radius: 14px;
+      padding: 24px;
+      border: 1px solid var(--border);
+    }
+    .phi-card .phi-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+    .phi-card h4 { font-size: .95rem; font-weight: 700; margin-bottom: 6px; }
+    .phi-card p { font-size: .83rem; color: var(--muted); }
+    .phi-card.pm  { background: var(--pm-lt);  border-color: var(--pm-mid); }
+    .phi-card.biz { background: var(--biz-lt); border-color: var(--biz-mid); }
+    .phi-card.ba  { background: var(--ba-lt);  border-color: #c4b5fd; }
+    .phi-card.shared { background: #fefce8; border-color: #fde68a; }
+
+    .ownership-bar {
+      display: flex;
+      border-radius: 12px;
+      overflow: hidden;
+      max-width: 780px;
+      margin: 0 auto;
+      height: 52px;
+      box-shadow: var(--shadow-sm);
+    }
+    .ownership-bar .seg {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .78rem;
+      font-weight: 700;
+      gap: 6px;
+      color: #fff;
+      transition: flex .3s;
+    }
+    .ownership-bar .seg.biz  { background: var(--biz);  flex: 3; }
+    .ownership-bar .seg.ba   { background: var(--ba);   flex: 2; }
+    .ownership-bar .seg.pm   { background: var(--pm);   flex: 2; }
+    .ownership-bar .seg span { opacity: .85; font-weight: 400; font-size: .72rem; }
+    .bar-label {
+      text-align: center;
+      margin-top: 10px;
+      font-size: .78rem;
+      color: var(--muted);
+    }
+
+    /* ── Phase cards ──────────────────────────── */
+    .phases-section { background: var(--bg); }
+    .phase-card {
+      background: var(--surface);
+      border-radius: 18px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 24px;
+      overflow: hidden;
+      max-width: 1060px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .phase-card-header {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 20px;
+      padding: 22px 28px;
+      border-bottom: 1px solid var(--border);
+    }
+    .phase-num {
+      width: 42px; height: 42px;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem; color: #fff;
+      flex-shrink: 0;
+    }
+    .phase-title { font-size: 1.05rem; font-weight: 700; }
+    .phase-subtitle { font-size: .82rem; color: var(--muted); margin-top: 2px; }
+    .phase-effort-pills { display: flex; gap: 8px; flex-wrap: wrap; justify-content: flex-end; }
+    .effort-pill {
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 11px;
+      border-radius: 999px;
+      font-size: .75rem;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+    .effort-pill .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+    .effort-pill.pm-pill  { background: var(--pm-lt);  color: var(--pm); }
+    .effort-pill.biz-pill { background: var(--biz-lt); color: #065f46; }
+    .effort-pill .dot.pm  { background: var(--pm); }
+    .effort-pill .dot.biz { background: var(--biz); }
+
+    .phase-card-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 0;
+    }
+    @media (max-width: 768px) {
+      .phase-card-body { grid-template-columns: 1fr; }
+      .phase-card-header { grid-template-columns: auto 1fr; }
+      .phase-effort-pills { grid-column: 1/-1; justify-content: flex-start; }
+    }
+    .phase-col {
+      padding: 20px 24px;
+      border-right: 1px solid var(--border);
+    }
+    .phase-col:last-child { border-right: none; }
+    .phase-col-label {
+      font-size: .7rem;
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .phase-col-label .pill-tag {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: .67rem;
+    }
+    .phase-col ul { list-style: none; }
+    .phase-col ul li {
+      display: flex;
+      gap: 8px;
+      font-size: .83rem;
+      padding: 5px 0;
+      border-bottom: 1px solid #f1f5f9;
+      align-items: flex-start;
+    }
+    .phase-col ul li:last-child { border-bottom: none; }
+    .phase-col ul li .bullet { flex-shrink: 0; margin-top: 2px; font-size: .75rem; }
+
+    .benefit-box {
+      background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+    .benefit-box .benefit-title {
+      font-size: .72rem;
+      font-weight: 800;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+      color: var(--biz);
+      margin-bottom: 6px;
+    }
+    .benefit-box ul li { border-bottom: none !important; padding: 3px 0 !important; }
+    .benefit-box ul li .bullet { color: var(--biz) !important; }
+
+    /* ── RACI ─────────────────────────────────── */
+    .raci-section { background: var(--surface); }
+    .role-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .role-pill {
+      display: flex; align-items: center; gap: 7px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: .82rem;
+    }
+    .role-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+    }
+    .raci-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-bottom: 36px;
+    }
+    .raci-item {
+      display: flex; align-items: center; gap: 8px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 5px 14px;
+      font-size: .82rem;
+    }
+    .chip-sm {
+      width: 24px; height: 24px;
+      border-radius: 6px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: .78rem; color: #fff; flex-shrink: 0;
+    }
+    .chip-sm.R { background: var(--R); }
+    .chip-sm.A { background: var(--A); }
+    .chip-sm.C { background: var(--C); }
+    .chip-sm.I { background: var(--I); }
+    .chip-sm._ { background: #e2e8f0; color: #94a3b8; }
+
+    .raci-scroll { overflow-x: auto; max-width: 1060px; margin: 0 auto; }
+    .raci-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .82rem;
+      min-width: 700px;
+    }
+    .raci-table thead {
+      position: sticky; top: 0; z-index: 2;
+    }
+    .raci-table thead tr:first-child th {
+      background: #1e293b;
+      color: #fff;
+      padding: 12px 10px;
+      font-size: .72rem;
+      font-weight: 700;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .raci-table thead tr:first-child th:first-child { text-align: left; border-radius: 10px 0 0 0; min-width: 200px; }
+    .raci-table thead tr:first-child th:last-child  { border-radius: 0 10px 0 0; }
+    .raci-table thead tr:nth-child(2) th {
+      background: #f8fafc;
+      border-bottom: 2px solid var(--border);
+      padding: 8px 10px;
+      font-size: .7rem;
+      color: var(--muted);
+      font-weight: 600;
+    }
+    .raci-table tbody td {
+      padding: 9px 10px;
+      border-bottom: 1px solid #f1f5f9;
+      text-align: center;
+      vertical-align: middle;
+    }
+    .raci-table tbody tr:hover td { background: #fafbfd; }
+    .raci-table tbody td:first-child {
+      text-align: left;
+      font-weight: 600;
+      font-size: .84rem;
+    }
+    .raci-table tbody td.benefit-cell {
+      text-align: left;
+      font-size: .76rem;
+      color: #065f46;
+      background: #f0fdf4;
+      font-style: italic;
+      max-width: 180px;
+    }
+    .phase-group-row td {
+      background: #1e293b !important;
+      color: #94a3b8;
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .07em;
+      text-transform: uppercase;
+      padding: 8px 10px;
+    }
+    .phase-group-row td:first-child { color: #e2e8f0; }
+    .chip {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 28px; height: 28px;
+      border-radius: 7px;
+      font-weight: 800; font-size: .82rem; color: #fff;
+    }
+    .chip.R { background: var(--R); }
+    .chip.A { background: var(--A); }
+    .chip.C { background: var(--C); }
+    .chip.I { background: var(--I); }
+    .chip._ { background: #e2e8f0; color: #94a3b8; }
+
+    /* ── Outcomes section ────────────────────── */
+    .outcomes-section { background: var(--bg); }
+    .outcomes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      max-width: 1060px;
+      margin: 0 auto;
+    }
+    .outcome-card {
+      background: var(--surface);
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: var(--shadow-sm);
+      border-top: 4px solid var(--pm);
+    }
+    .outcome-card:nth-child(2) { border-color: var(--biz); }
+    .outcome-card:nth-child(3) { border-color: var(--ba); }
+    .outcome-card:nth-child(4) { border-color: #d97706; }
+    .outcome-card:nth-child(5) { border-color: var(--tech); }
+    .outcome-card:nth-child(6) { border-color: var(--exec); }
+    .outcome-card .oc-icon { font-size: 1.8rem; margin-bottom: 10px; display: block; }
+    .outcome-card h4 { font-size: .9rem; font-weight: 700; margin-bottom: 6px; }
+    .outcome-card p { font-size: .8rem; color: var(--muted); }
+
+    /* ── Footer ───────────────────────────────── */
+    footer {
+      background: #0f172a;
+      color: #475569;
+      padding: 32px 24px;
+      text-align: center;
+      font-size: .82rem;
+    }
+    footer strong { color: #94a3b8; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════  HERO  ═══════════════════ -->
+<header class="hero">
+  <div class="badge">Project Governance · Balanced Ownership Model</div>
+  <h1>Business-Led Requirements,<br><em>PM-Governed</em> Delivery</h1>
+  <p>
+    The most successful projects combine deep domain knowledge from the business with disciplined structure from the PM.
+    Neither party works in isolation — they play distinct, complementary roles at every stage.
+  </p>
+  <div class="hero-pills">
+    <div class="hero-pill">Business owns the <strong>WHAT</strong> <span>— content &amp; accuracy</span></div>
+    <div class="hero-pill">BA bridges the <strong>GAP</strong> <span>— translation &amp; structure</span></div>
+    <div class="hero-pill">PM governs the <strong>HOW</strong> <span>— process, quality &amp; sign-off</span></div>
+  </div>
+</header>
+
+
+<!-- ═══════════════════  PHILOSOPHY  ═══════════════════ -->
+<section class="philosophy-section">
+  <div class="container">
+    <div class="section-title">
+      <div class="section-label">The Model</div>
+      <h2>Why Balance Beats Single Ownership</h2>
+      <p>Assigning requirements entirely to either side creates blind spots. The balanced model assigns each role to the party best qualified to perform it.</p>
+    </div>
+
+    <div class="philosophy-grid">
+      <div class="phi-card biz">
+        <span class="phi-icon">🏢</span>
+        <h4>Business Stakeholders own the content</h4>
+        <p>They understand the process, the pain, and the expected outcome. They author requirements in their own language first — preserving domain accuracy.</p>
+      </div>
+      <div class="phi-card ba">
+        <span class="phi-icon">🔄</span>
+        <h4>BA translates and structures</h4>
+        <p>The Business Analyst converts business intent into unambiguous, testable, traceable requirements — bridging domain knowledge and technical delivery.</p>
+      </div>
+      <div class="phi-card pm">
+        <span class="phi-icon">📐</span>
+        <h4>PM governs quality and process</h4>
+        <p>The PM sets the template, enforces completeness, manages sign-off, and owns change control — without rewriting what the business said.</p>
+      </div>
+      <div class="phi-card shared">
+        <span class="phi-icon">🤝</span>
+        <h4>Shared accountability at gates</h4>
+        <p>At each phase gate, both business and PM sign off — business for accuracy, PM for completeness and traceability. Neither can bypass the other.</p>
+      </div>
+    </div>
+
+    <div style="max-width:780px;margin:0 auto;">
+      <div class="bar-label" style="margin-bottom:8px;font-weight:600;color:var(--text);">Requirements Ownership Split — Balanced Model</div>
+      <div class="ownership-bar">
+        <div class="seg biz">🏢 Business &amp; SMEs <span>(Content &amp; Accuracy — 43%)</span></div>
+        <div class="seg ba">🔄 BA <span>(Structure — 28%)</span></div>
+        <div class="seg pm">📐 PM <span>(Process &amp; Quality — 29%)</span></div>
+      </div>
+      <div class="bar-label">Compare to PM-only: 100% PM burden · Business-only: no structure, no traceability</div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════  PHASE-BY-PHASE  ═══════════════════ -->
+<section class="phases-section">
+  <div class="container">
+    <div class="section-title">
+      <div class="section-label">Lifecycle</div>
+      <h2>Phase-by-Phase: Roles, Activities &amp; Benefits</h2>
+      <p>At each stage, the business and PM contribute differently — and the balanced model generates a specific, measurable benefit from that collaboration.</p>
+    </div>
+
+    <!-- ── Phase 1 ── -->
+    <div class="phase-card">
+      <div class="phase-card-header">
+        <div class="phase-num" style="background:#6366f1;">1</div>
+        <div>
+          <div class="phase-title">Mobilisation &amp; Initiation</div>
+          <div class="phase-subtitle">Project charter · governance setup · stakeholder mapping · risk register</div>
+        </div>
+        <div class="phase-effort-pills">
+          <div class="effort-pill pm-pill"><div class="dot pm"></div>PM: High</div>
+          <div class="effort-pill biz-pill"><div class="dot biz"></div>Business: Medium</div>
+        </div>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#065f46;">
+            <span>🏢</span> Business Activities
+            <span class="pill-tag" style="background:var(--biz-lt);color:#065f46;">Contributor</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Articulate strategic objectives and success criteria</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Identify key business sponsors and decision-makers</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Provide high-level scope boundaries and constraints</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Confirm priority and urgency of the initiative</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:var(--pm);">
+            <span>📐</span> PM Activities
+            <span class="pill-tag" style="background:var(--pm-lt);color:var(--pm);">Governs</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Draft and socialise the project charter</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Establish steering committee and reporting cadence</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Build initial RAID log; schedule risk workshops</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Define requirements process, templates, and RACI</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#92400e;">
+            <span>✨</span> Balanced Model Benefit
+          </div>
+          <p style="font-size:.83rem;color:var(--muted);margin-bottom:10px;">What this collaboration unlocks that single-ownership cannot:</p>
+          <div class="benefit-box">
+            <div class="benefit-title">Benefits at this stage</div>
+            <ul>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Charter reflects real business priorities, not PM assumptions</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Governance is set up before conflict, not after</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Business feels ownership from day one — reducing resistance later</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Phase 2 ── -->
+    <div class="phase-card">
+      <div class="phase-card-header">
+        <div class="phase-num" style="background:#2563eb;">2</div>
+        <div>
+          <div class="phase-title">Requirements Gathering &amp; Documentation</div>
+          <div class="phase-subtitle">Discovery workshops · requirements authoring · BA structuring · PM sign-off process</div>
+        </div>
+        <div class="phase-effort-pills">
+          <div class="effort-pill pm-pill"><div class="dot pm"></div>PM: High</div>
+          <div class="effort-pill biz-pill"><div class="dot biz"></div>Business: Very High</div>
+        </div>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#065f46;">
+            <span>🏢</span> Business Activities
+            <span class="pill-tag" style="background:var(--biz-lt);color:#065f46;">Authors Content</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Lead requirements workshops as the domain expert</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Draft user stories and process flows in their own language</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Prioritise requirements (MoSCoW) with business rationale</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Review and confirm BA-structured requirements for accuracy</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Formally sign off on the baselined requirements document</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:var(--pm);">
+            <span>📐</span> PM Activities
+            <span class="pill-tag" style="background:var(--pm-lt);color:var(--pm);">Governs Quality</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Facilitate workshops (agenda, timing, outputs)</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Enforce completeness against the requirements template</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Identify gaps in non-functional requirements</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Manage sign-off process and version control</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Set up change request process before baseline is locked</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#92400e;"><span>✨</span> Balanced Model Benefit</div>
+          <p style="font-size:.83rem;color:var(--muted);margin-bottom:10px;">The most impactful phase for the balanced model:</p>
+          <div class="benefit-box">
+            <div class="benefit-title">Benefits at this stage</div>
+            <ul>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Requirements carry domain authority — business wrote them</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Structure and traceability ensured by BA + PM — no gaps</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Business ownership drives faster, more decisive sign-off</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Fewer change requests during build as intent is preserved</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Phase 3 ── -->
+    <div class="phase-card">
+      <div class="phase-card-header">
+        <div class="phase-num" style="background:#0891b2;">3</div>
+        <div>
+          <div class="phase-title">Solution Design</div>
+          <div class="phase-subtitle">Functional &amp; technical design · architecture · prototype review</div>
+        </div>
+        <div class="phase-effort-pills">
+          <div class="effort-pill pm-pill"><div class="dot pm"></div>PM: Medium</div>
+          <div class="effort-pill biz-pill"><div class="dot biz"></div>Business: Medium</div>
+        </div>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#065f46;">
+            <span>🏢</span> Business Activities
+            <span class="pill-tag" style="background:var(--biz-lt);color:#065f46;">Validator</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Review functional design against their authored requirements</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Participate in prototype walkthroughs and provide feedback</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Confirm that design decisions match business intent</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Flag any design departures from agreed requirements</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:var(--pm);">
+            <span>📐</span> PM Activities
+            <span class="pill-tag" style="background:var(--pm-lt);color:var(--pm);">Tracks &amp; Governs</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Manage design review sessions and track open items</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Maintain traceability from requirements to design decisions</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Assess impact of any design changes on scope and timeline</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Obtain formal design sign-off from business and tech leads</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#92400e;"><span>✨</span> Balanced Model Benefit</div>
+          <div class="benefit-box">
+            <div class="benefit-title">Benefits at this stage</div>
+            <ul>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Business can validate design against requirements they wrote — reducing misinterpretation</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Design iterations are fewer because intent was clear from the start</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>PM's traceability matrix catches drift early</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Phase 4 ── -->
+    <div class="phase-card">
+      <div class="phase-card-header">
+        <div class="phase-num" style="background:#16a34a;">4</div>
+        <div>
+          <div class="phase-title">Build &amp; Development</div>
+          <div class="phase-subtitle">Configuration · coding · unit testing · change request management</div>
+        </div>
+        <div class="phase-effort-pills">
+          <div class="effort-pill pm-pill"><div class="dot pm"></div>PM: Medium</div>
+          <div class="effort-pill biz-pill"><div class="dot biz"></div>Business: Low</div>
+        </div>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#065f46;">
+            <span>🏢</span> Business Activities
+            <span class="pill-tag" style="background:var(--biz-lt);color:#065f46;">On-Call SME</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Respond promptly to BA/dev clarification queries</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Review and approve any change requests within SLA</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Begin preparing end-user test scenarios for UAT</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:var(--pm);">
+            <span>📐</span> PM Activities
+            <span class="pill-tag" style="background:var(--pm-lt);color:var(--pm);">Controls &amp; Protects</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Track build progress against plan; manage risks daily</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Triage and route clarification queries efficiently</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Gate all change requests — reject gold-plating</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Report status to steering committee</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#92400e;"><span>✨</span> Balanced Model Benefit</div>
+          <div class="benefit-box">
+            <div class="benefit-title">Benefits at this stage</div>
+            <ul>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Business disruption is minimised — low effort, SME-only queries</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Clarifications resolved faster because business authored requirements — no telephone game</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>PM blocks scope creep while keeping business engaged</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Phase 5 ── -->
+    <div class="phase-card">
+      <div class="phase-card-header">
+        <div class="phase-num" style="background:#d97706;">5</div>
+        <div>
+          <div class="phase-title">Testing — SIT &amp; UAT</div>
+          <div class="phase-subtitle">Test planning · system integration testing · user acceptance testing · defect triage</div>
+        </div>
+        <div class="phase-effort-pills">
+          <div class="effort-pill pm-pill"><div class="dot pm"></div>PM: High</div>
+          <div class="effort-pill biz-pill"><div class="dot biz"></div>Business: Very High</div>
+        </div>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#065f46;">
+            <span>🏢</span> Business Activities
+            <span class="pill-tag" style="background:var(--biz-lt);color:#065f46;">Leads UAT</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Contribute to UAT test scripts based on their own requirements</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Execute UAT with full domain context — not just button-clicking</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Classify defects: blocking vs. cosmetic vs. enhancement</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Formally sign off UAT once exit criteria are met</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:var(--pm);">
+            <span>📐</span> PM Activities
+            <span class="pill-tag" style="background:var(--pm-lt);color:var(--pm);">Coordinates &amp; Gates</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Oversee test planning; ensure traceability to requirements</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Coordinate test environments and data</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Run defect triage; enforce severity classification</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Track UAT progress against go-live readiness criteria</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#92400e;"><span>✨</span> Balanced Model Benefit</div>
+          <div class="benefit-box">
+            <div class="benefit-title">Benefits at this stage</div>
+            <ul>
+              <li><span class="bullet" style="color:var(--biz)">→</span>UAT defect rate is lower — business tested against requirements they authored</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>UAT sign-off is faster and more confident — no "I didn't mean that"</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Disputes about scope are resolved by the requirements baseline, not opinions</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Phase 6 ── -->
+    <div class="phase-card">
+      <div class="phase-card-header">
+        <div class="phase-num" style="background:#dc2626;">6</div>
+        <div>
+          <div class="phase-title">Go-Live &amp; Deployment</div>
+          <div class="phase-subtitle">Cutover planning · training · communications · production launch</div>
+        </div>
+        <div class="phase-effort-pills">
+          <div class="effort-pill pm-pill"><div class="dot pm"></div>PM: Very High</div>
+          <div class="effort-pill biz-pill"><div class="dot biz"></div>Business: High</div>
+        </div>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#065f46;">
+            <span>🏢</span> Business Activities
+            <span class="pill-tag" style="background:var(--biz-lt);color:#065f46;">Champion Change</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Drive end-user change management and adoption</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Lead or participate in training delivery</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Provide go/no-go input from a business readiness perspective</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Communicate launch to operational teams</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:var(--pm);">
+            <span>📐</span> PM Activities
+            <span class="pill-tag" style="background:var(--pm-lt);color:var(--pm);">Executes Cutover</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Own and execute the cutover plan</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Manage go/no-go meeting and decision log</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Coordinate deployment with tech and infrastructure teams</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Stand up incident management for hypercare</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#92400e;"><span>✨</span> Balanced Model Benefit</div>
+          <div class="benefit-box">
+            <div class="benefit-title">Benefits at this stage</div>
+            <ul>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Business champions adoption — they built what they asked for</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Go-live is a shared milestone, not a handover from PM to business</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Resistance to change is lower when business shaped the solution</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Phase 7 ── -->
+    <div class="phase-card">
+      <div class="phase-card-header">
+        <div class="phase-num" style="background:#7c3aed;">7</div>
+        <div>
+          <div class="phase-title">Hypercare &amp; Project Closure</div>
+          <div class="phase-subtitle">Live issue management · BAU handover · lessons learned · benefit realisation</div>
+        </div>
+        <div class="phase-effort-pills">
+          <div class="effort-pill pm-pill"><div class="dot pm"></div>PM: Medium</div>
+          <div class="effort-pill biz-pill"><div class="dot biz"></div>Business: Medium</div>
+        </div>
+      </div>
+      <div class="phase-card-body">
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#065f46;">
+            <span>🏢</span> Business Activities
+            <span class="pill-tag" style="background:var(--biz-lt);color:#065f46;">Takes Ownership</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Triage and prioritise live operational issues</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Accept formal BAU handover from the project team</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Contribute to lessons learned from a business perspective</li>
+            <li><span class="bullet" style="color:var(--biz)">●</span>Baseline benefit realisation metrics for future tracking</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:var(--pm);">
+            <span>📐</span> PM Activities
+            <span class="pill-tag" style="background:var(--pm-lt);color:var(--pm);">Closes &amp; Learns</span>
+          </div>
+          <ul>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Monitor hypercare period; manage SLA for live issues</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Facilitate lessons learned workshop</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Produce project closure report and benefit realisation plan</li>
+            <li><span class="bullet" style="color:var(--pm)">●</span>Formally close project and release team</li>
+          </ul>
+        </div>
+        <div class="phase-col">
+          <div class="phase-col-label" style="color:#92400e;"><span>✨</span> Balanced Model Benefit</div>
+          <div class="benefit-box">
+            <div class="benefit-title">Benefits at this stage</div>
+            <ul>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Business takes BAU ownership confidently — they were involved throughout</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Lessons learned are richer — both parties reflect on shared accountability</li>
+              <li><span class="bullet" style="color:var(--biz)">→</span>Benefit realisation is more achievable — solution matches what was actually needed</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════  RACI  ═══════════════════ -->
+<section class="raci-section">
+  <div class="container">
+    <div class="section-title">
+      <div class="section-label">RACI Matrix</div>
+      <h2>Balanced Model RACI — All Phases</h2>
+      <p>In this model, Business and PM share accountability. Notice that business holds <strong>R</strong> for content and <strong>A</strong> for accuracy sign-offs, while PM holds <strong>A</strong> for process gates.</p>
+    </div>
+
+    <div class="role-legend">
+      <div class="role-pill"><div class="role-dot" style="background:var(--biz)"></div><strong>BUS</strong> — Business Stakeholders / SMEs</div>
+      <div class="role-pill"><div class="role-dot" style="background:var(--ba)"></div><strong>BA</strong> — Business Analyst</div>
+      <div class="role-pill"><div class="role-dot" style="background:var(--pm)"></div><strong>PM</strong> — Project Manager</div>
+      <div class="role-pill"><div class="role-dot" style="background:var(--tech)"></div><strong>TECH</strong> — Technical / Dev Team</div>
+      <div class="role-pill"><div class="role-dot" style="background:var(--exec)"></div><strong>EXEC</strong> — Executive Sponsor</div>
+    </div>
+    <div class="raci-legend">
+      <div class="raci-item"><div class="chip-sm R">R</div><span><strong>Responsible</strong> — does the work</span></div>
+      <div class="raci-item"><div class="chip-sm A">A</div><span><strong>Accountable</strong> — owns the outcome</span></div>
+      <div class="raci-item"><div class="chip-sm C">C</div><span><strong>Consulted</strong> — provides input</span></div>
+      <div class="raci-item"><div class="chip-sm I">I</div><span><strong>Informed</strong> — kept up to date</span></div>
+    </div>
+
+    <div class="raci-scroll">
+      <table class="raci-table">
+        <thead>
+          <tr>
+            <th style="min-width:210px;">Activity</th>
+            <th style="min-width:160px;">Balanced Model Benefit</th>
+            <th>BUS</th>
+            <th>BA</th>
+            <th>PM</th>
+            <th>TECH</th>
+            <th>EXEC</th>
+          </tr>
+          <tr>
+            <th style="text-align:left;"></th>
+            <th style="text-align:left;color:#059669;font-style:italic;">What the balance unlocks</th>
+            <th>Stakeholders</th>
+            <th>Analyst</th>
+            <th>Proj. Mgr</th>
+            <th>Dev / Tech</th>
+            <th>Sponsor</th>
+          </tr>
+        </thead>
+        <tbody>
+
+          <!-- Phase 1 -->
+          <tr class="phase-group-row"><td>Phase 1 — Mobilisation &amp; Initiation</td><td colspan="6"></td></tr>
+          <tr>
+            <td>Project Charter</td>
+            <td class="benefit-cell">Business input prevents misaligned objectives</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip A">A</span></td>
+          </tr>
+          <tr>
+            <td>Governance &amp; RACI Setup</td>
+            <td class="benefit-cell">Shared model agreed upfront; no ambiguity later</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip A">A</span></td>
+          </tr>
+          <tr>
+            <td>Stakeholder Mapping</td>
+            <td class="benefit-cell">Business names the right SMEs early</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Risk Register</td>
+            <td class="benefit-cell">Business surfaces operational risks PM would miss</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+
+          <!-- Phase 2 -->
+          <tr class="phase-group-row"><td>Phase 2 — Requirements Gathering</td><td colspan="6"></td></tr>
+          <tr>
+            <td>Requirements Workshops</td>
+            <td class="benefit-cell">Business leads content; PM facilitates structure</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Requirements Drafting</td>
+            <td class="benefit-cell">Business authors; BA structures — domain accuracy + testability</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>MoSCoW Prioritisation</td>
+            <td class="benefit-cell">Priority set by business value, not PM perception</td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip C">C</span></td>
+          </tr>
+          <tr>
+            <td>Non-Functional Requirements</td>
+            <td class="benefit-cell">PM enforces completeness; business confirms constraints</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Requirements Sign-Off</td>
+            <td class="benefit-cell">Dual sign-off: business (accuracy) + PM (completeness)</td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Scope Baseline &amp; Change Control</td>
+            <td class="benefit-cell">PM owns the gate; business understands the cost of changes</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+
+          <!-- Phase 3 -->
+          <tr class="phase-group-row"><td>Phase 3 — Solution Design</td><td colspan="6"></td></tr>
+          <tr>
+            <td>Functional Design Review</td>
+            <td class="benefit-cell">Business validates intent, not just format — deeper review</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Technical Architecture</td>
+            <td class="benefit-cell">Business requirements drive architecture, not the reverse</td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Prototype / UX Walkthrough</td>
+            <td class="benefit-cell">Early business feedback avoids late design rework</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Design Sign-Off</td>
+            <td class="benefit-cell">Confident sign-off — business cross-checks their own requirements</td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+
+          <!-- Phase 4 -->
+          <tr class="phase-group-row"><td>Phase 4 — Build &amp; Development</td><td colspan="6"></td></tr>
+          <tr>
+            <td>Development Execution</td>
+            <td class="benefit-cell">Clear requirements mean fewer mid-build queries</td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Clarification Resolution</td>
+            <td class="benefit-cell">BA routes queries; business responds as SME — fastest path to answer</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Change Request Assessment</td>
+            <td class="benefit-cell">Business understands trade-offs because they own requirements</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Status Reporting</td>
+            <td class="benefit-cell">PM reports progress; business receives, not chases</td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip A">A</span></td>
+          </tr>
+
+          <!-- Phase 5 -->
+          <tr class="phase-group-row"><td>Phase 5 — Testing (SIT &amp; UAT)</td><td colspan="6"></td></tr>
+          <tr>
+            <td>Test Plan &amp; Scripts</td>
+            <td class="benefit-cell">Business co-authors scripts — tests what matters, not just what works</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>SIT Execution</td>
+            <td class="benefit-cell">Tech leads SIT against PM's traceability matrix</td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>UAT Execution</td>
+            <td class="benefit-cell">Business leads UAT with authority — they own the requirements</td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Defect Triage</td>
+            <td class="benefit-cell">Business classifies severity — no PM gatekeeping of business intent</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>UAT Sign-Off</td>
+            <td class="benefit-cell">Business signs off with confidence — not under PM pressure</td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+
+          <!-- Phase 6 -->
+          <tr class="phase-group-row"><td>Phase 6 — Go-Live &amp; Deployment</td><td colspan="6"></td></tr>
+          <tr>
+            <td>Cutover Plan</td>
+            <td class="benefit-cell">Business defines operational readiness criteria</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Go / No-Go Decision</td>
+            <td class="benefit-cell">Shared call: business (readiness) + PM (plan) + EXEC (mandate)</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip A">A</span></td>
+          </tr>
+          <tr>
+            <td>Training Delivery</td>
+            <td class="benefit-cell">Business leads training — they know the process and the change</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Deployment Execution</td>
+            <td class="benefit-cell">Tech executes; PM commands; business on standby</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+
+          <!-- Phase 7 -->
+          <tr class="phase-group-row"><td>Phase 7 — Hypercare &amp; Closure</td><td colspan="6"></td></tr>
+          <tr>
+            <td>Live Issue Management</td>
+            <td class="benefit-cell">Business triages impact; PM coordinates fix — clear lanes</td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>BAU Handover</td>
+            <td class="benefit-cell">Seamless: business was a co-owner throughout</td>
+            <td><span class="chip A">A</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+          </tr>
+          <tr>
+            <td>Lessons Learned</td>
+            <td class="benefit-cell">Richer insights — both lenses (delivery + domain) contribute</td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip A">A</span></td>
+          </tr>
+          <tr>
+            <td>Project Closure Report</td>
+            <td class="benefit-cell">Benefit realisation is measurable — requirements were business-owned</td>
+            <td><span class="chip C">C</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip R">R</span></td>
+            <td><span class="chip I">I</span></td>
+            <td><span class="chip A">A</span></td>
+          </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════  OUTCOMES  ═══════════════════ -->
+<section class="outcomes-section">
+  <div class="container">
+    <div class="section-title">
+      <div class="section-label">Summary</div>
+      <h2>What the Balanced Model Delivers</h2>
+      <p>Across the full lifecycle, shared ownership produces outcomes that neither party achieves alone.</p>
+    </div>
+    <div class="outcomes-grid">
+      <div class="outcome-card">
+        <span class="oc-icon">🎯</span>
+        <h4>Higher Requirement Accuracy</h4>
+        <p>Business authors requirements in their own language — domain knowledge is preserved, not filtered through a PM layer.</p>
+      </div>
+      <div class="outcome-card">
+        <span class="oc-icon">📐</span>
+        <h4>Structural Rigour</h4>
+        <p>PM and BA ensure completeness, non-functional coverage, and traceability — structure the business alone would not produce.</p>
+      </div>
+      <div class="outcome-card">
+        <span class="oc-icon">⚡</span>
+        <h4>Faster Sign-Offs</h4>
+        <p>Business signs off on what they wrote. No re-explanation cycle. Fewer escalations and "this isn't what I meant" moments.</p>
+      </div>
+      <div class="outcome-card">
+        <span class="oc-icon">🔒</span>
+        <h4>Shared Accountability</h4>
+        <p>Dual sign-off at every gate means no single party can deflect. Disputes are resolved by the baselined document, not politics.</p>
+      </div>
+      <div class="outcome-card">
+        <span class="oc-icon">📉</span>
+        <h4>Lower UAT Defect Rate</h4>
+        <p>Business UAT against their own requirements surfaces real-world gaps rather than testing against a PM's interpretation.</p>
+      </div>
+      <div class="outcome-card">
+        <span class="oc-icon">🚀</span>
+        <h4>Stronger BAU Adoption</h4>
+        <p>Business was a co-owner throughout. At go-live, they champion the solution rather than receive it.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer>
+  <strong>Balanced Requirements Ownership Framework</strong> &nbsp;·&nbsp;
+  Business-Led · PM-Governed · BA-Structured &nbsp;·&nbsp;
+  RACI aligned to PMBOK &amp; PRINCE2 · © 2025
+</footer>
+
+</body>
+</html>
